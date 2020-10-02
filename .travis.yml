@@ -8,4 +8,19 @@ before-install:
   - docker build -t neotomax/docker-react -f Dockerfile.dev .
 
 script:
-    - docker run -e CI=true neotomax/docker-react npm run test
+  - docker run -e CI=true neotomax/docker-react npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "docker-react"
+  env: "DockerReact-env"
+  #Found when searchin S3 in AWS
+  bucket_name: "elasticbeanstalk-us-east-2-739876870306"
+  #Same as the app-name
+  bucket_path: "docker-react"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+
